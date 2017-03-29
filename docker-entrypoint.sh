@@ -113,6 +113,7 @@ set -e
 	fi
 
 	# STMP server configuration
+    SMTP_PRETEND=${SMTP_SERVER:-false}
 	SMTP_SERVER=${SMTP_SERVER:-smtp.sendgrid.net}
 	SMTP_PORT=${SMTP_PORT:-25}
 	SMTP_USER=${SMTP_USER:-username}
@@ -125,7 +126,7 @@ set -e
 		cat > app/config/local/mail.php <<-EOF
 		<?php
 		return [
-			'pretend' => false,
+			'pretend' => '$SMTP_PRETEND',
 			'username' => '$SMTP_USER',
 			'password' => '$SMTP_PASSWORD',
 			'host' => '$SMTP_SERVER',

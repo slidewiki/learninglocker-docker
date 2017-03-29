@@ -40,6 +40,8 @@ There are a number of defaults for these in `docker-compose.yml` as well
 - `APP_SECRET_KEY`: [Encryption key](http://docs.learninglocker.net/installation/#configuration) used by learning locker. Defaults to `CHANGEME12345678`
 - `SMTP_SERVER`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM_NAME`, `EMAIL_FROM_ADDRESS`: Self explanatory, see [configuration page](http://docs.learninglocker.net/installation/#configuration) for more details
 
+> NOTE: If you want to run the image wihtout an SMTP server configured set the environment variable `SMTP_PRETEND` to `true`.
+
 ##### Optional
 
 - `LEARNINGLOCKER_DB_HOST`: (_optional_) If not linking to another docker container, hostname of the mongoDB server
