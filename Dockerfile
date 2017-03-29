@@ -46,6 +46,9 @@ RUN curl -L -o learninglocker.tar.gz `curl -s https://api.github.com/repos/Learn
 	&& rm learninglocker.tar.gz \
 	&& chown -R www-data /var/www/html
 
+# fixes the framework autodetecting port 80 and generating HTTP URLs that need to be HTTPS when running behind tls reverse proxy
+RUN sed -i 's/<?php/<?php\n$_SERVER[SERVER_PORT]=443;\n$_SERVER[HTTPS]='on';/g' /var/www/html/public/index.php 
+
 RUN mkdir -p /var/www/api && ln -s  /var/www/html/public /var/www/api/ll && chown www-data /var/www/api/ll
 
 USER www-data
