@@ -2,7 +2,7 @@
 This is fork of [`hongymagic/learninglocker`](https://gitlab.com/hongymagic/learninglocker) the main modifications are around removing the inbuilt SSL support (so you can use it behind a LB) and also the mongoDB user setup
 
 This is a HTTP **application-only** container for [Learning Locker](http://learninglocker.net).
-As such, link to a running mongoDB container or external mongoDB host is required.
+As such, link to a running mongoDB container or external mongoDB host is required. Alternatively, the included docker-compose.yml will build a mongo image. 
 
 If you are running it behind a load balancer set the `LOAD_BALANCER` env variable to something otherwise your assets won't get the right path
 
