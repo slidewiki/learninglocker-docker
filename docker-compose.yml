@@ -2,22 +2,30 @@ version: '2'
 
 services:
     mongo:
-        build:
-             context: mongo
-        env_file:
-             - .env
+        image: mongo:latest
+        environment:
+            MONGODB_PASS: 'password'
         ports:
              - "27017:27017"
              - "28017:28017"
-        volumes:
-             - /data/learninglocker-mongo:/data/db
     learninglocker:
         build: .
         restart: always
-        links:
+        depends_on:
             - mongo
         ports:
             - "80:80"
             - "81:81"
-        env_file:
-            - .env
+        environment:
+            APP_URL: 'example.com'
+            LEARNINGLOCKER_DB_HOST: 'mongo'
+            LEARNINGLOCKER_DB_NAME: 'learninglocker'
+            LEARNINGLOCKER_DB_USER: ''  # change if needed
+            LEARNINGLOCKER_DB_PASSWORD: '' # change if needed
+            APP_SECRET_KEY: 'CHANGEME12345678'
+            SMTP_SERVER: 'smtp.sparkpost.com'
+            SMTP_PORT: 587
+            SMTP_USER: 'SMTP_INJECTION'
+            SMTP_PASSWORD: 'smtp-password'
+            EMAIL_FROM_NAME: 'Learning Locker LRS Docker Container'
+            EMAIL_FROM_ADDRESS: 'lrs@example.com'

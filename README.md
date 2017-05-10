@@ -36,8 +36,8 @@ There are a number of defaults for these in `docker-compose.yml` as well
 - `LEARNINGLOCKER_DB_USER`: If authentication is enabled on mongo, the user to use
 - `LEARNINGLOCKER_DB_PASSWORD`: If authentication is enabled on mongo, the password to use
 - `LEARNINGLOCKER_DB_NAME`: Name of the database to create for learning locker. Defaults to `learninglocker`
-- `LEARNINGLOCKER_URL`: FQDN of the final URL, if missing defaults to `$HOSTNAME`
-- `LEARNINGLOCKER_SECRET_KEY`: [Encryption key](http://docs.learninglocker.net/installation/#configuration) used by learning locker. Defaults to `CHANGEME12345678`
+- `APP_URL`: FQDN of the final URL, if missing defaults to `$HOSTNAME`
+- `APP_SECRET_KEY`: [Encryption key](http://docs.learninglocker.net/installation/#configuration) used by learning locker. Defaults to `CHANGEME12345678`
 - `SMTP_SERVER`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM_NAME`, `EMAIL_FROM_ADDRESS`: Self explanatory, see [configuration page](http://docs.learninglocker.net/installation/#configuration) for more details
 
 > NOTE: If you want to run the image wihtout an SMTP server configured set the environment variable `SMTP_PRETEND` to `true`.

@@ -29,32 +29,32 @@ set -e
 	: ${LEARNINGLOCKER_DB_PASSWORD:-learninglocker}
 	: ${LEARNINGLOCKER_DB_NAME:=learninglocker}
 
-	if [ -z "$LEARNINGLOCKER_DB_PASSWORD" ]; then
-		echo >&2 'error: missing required LEARNINGLOCKER_DB_PASSWORD environment variable'
-	 	echo >&2 '  Did you forget to -e LEARNINGLOCKER_DB_PASSWORD=... ?'
-	 	echo >&2
-	 	echo >&2 '  (Also of interest might be LEARNINGLOCKER_DB_USER and LEARNINGLOCKER_DB_NAME.)'
-	 	exit 1
-	fi
+	# if [ -z "$LEARNINGLOCKER_DB_PASSWORD" ]; then
+	# 	echo >&2 'error: missing required LEARNINGLOCKER_DB_PASSWORD environment variable'
+	# 	echo >&2 '  Did you forget to -e LEARNINGLOCKER_DB_PASSWORD=... ?'
+	# 	echo >&2
+	# 	echo >&2 '  (Also of interest might be LEARNINGLOCKER_DB_USER and LEARNINGLOCKER_DB_NAME.)'
+	# 	exit 1
+	# fi
 
 	# Check if FQDN/HOSTNAME is set
-	: ${LEARNINGLOCKER_URL:=$HOSTNAME}}
-	if [ -z "$LEARNINGLOCKER_URL" ]; then
-			echo >&2 'error: missing required LEARNINGLOCKER_URL/HOSTNAME environment variable'
+	: ${APP_URL:=$HOSTNAME}}
+	if [ -z "$APP_URL" ]; then
+			echo >&2 'error: missing required APP_URL/HOSTNAME environment variable'
 		exit 1
 	fi
 
 	# Create learninglocker user
-	#echo "==> Creating user $LEARNINGLOCKER_DB_USER@$LEARNINGLOCKER_DB_PASSWORD on $LEARNINGLOCKER_DB_HOST/$LEARNINGLOCKER_DB_NAME"
-	#cat > /tmp/createUser.js <<-EOF
-	#	use $LEARNINGLOCKER_DB_NAME;
-	#	db.createUser({ user: '$LEARNINGLOCKER_DB_USER', pwd: '$LEARNINGLOCKER_DB_PASSWORD', roles:[{ role: 'readWrite', db: '$LEARNINGLOCKER_DB_NAME' }] });
-	#EOF
-	#mongo \
-	#	--username "$MONGO_ADMIN_USER" \
-	#	--password "$MONGO_ADMIN_PASSWORD" \
-	#	"${LEARNINGLOCKER_DB_HOST}/admin" < /tmp/createUser.js
-	#rm /tmp/createUser.js
+	# echo "==> Creating user $LEARNINGLOCKER_DB_USER@$LEARNINGLOCKER_DB_PASSWORD on $LEARNINGLOCKER_DB_HOST/$LEARNINGLOCKER_DB_NAME"
+	# cat > /tmp/createUser.js <<-EOF
+	# 	use $LEARNINGLOCKER_DB_NAME;
+	# 	db.createUser({ user: '$LEARNINGLOCKER_DB_USER', pwd: '$LEARNINGLOCKER_DB_PASSWORD', roles:[{ role: 'readWrite', db: '$LEARNINGLOCKER_DB_NAME' }] });
+	# EOF
+	# mongo \
+		# --username "$MONGO_ADMIN_USER" \
+		# --password "$MONGO_ADMIN_PASSWORD" \
+		# "${LEARNINGLOCKER_DB_HOST}/admin" < /tmp/createUser.js
+	# rm /tmp/createUser.js
 
 	# Setup database connection to mongodb
 	if [ ! -e app/config/local/database.php ]; then
@@ -101,19 +101,19 @@ set -e
 	# 'password' => '$LEARNINGLOCKER_DB_PASSWORD',
 
 	# Configure secret key for encryption
-	LEARNINGLOCKER_SECRET_KEY=${LEARNINGLOCKER_SECRET_KEY:-CHANGEME12345678}
+	APP_SECRET_KEY=${APP_SECRET_KEY:-CHANGEME12345678}
 	if [ ! -e app/config/local/app.php ]; then
 		cat > app/config/local/app.php <<-EOF
 			<?php
 			return [
-				'key' => '$LEARNINGLOCKER_SECRET_KEY',
-				'url' => 'https://$LEARNINGLOCKER_URL'
+				'key' => '$APP_SECRET_KEY',
+				'url' => 'https://$APP_URL'
 			];
 		EOF
 	fi
 
 	# STMP server configuration
-    	SMTP_PRETEND=${SMTP_SERVER:-false}
+    SMTP_PRETEND=${SMTP_SERVER:-false}
 	SMTP_SERVER=${SMTP_SERVER:-smtp.sendgrid.net}
 	SMTP_PORT=${SMTP_PORT:-25}
 	SMTP_USER=${SMTP_USER:-username}
