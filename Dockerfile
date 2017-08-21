@@ -12,7 +12,7 @@ COPY conf/supervisord.conf /etc/
 
 # Install the PHP extensions we need
 #RUN docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr
-RUN docker-php-ext-install opcache zip mcrypt mbstring > /dev/null 2>&1
+RUN docker-php-ext-install pcntl bcmath opcache zip mcrypt mbstring > /dev/null 2>&1
 
 # Install PHP pecl mongo
 COPY bin/* /usr/local/bin/
@@ -41,10 +41,13 @@ RUN mkdir -p /var/www/html
 
 WORKDIR /tmp
 
-RUN curl -L -o learninglocker.tar.gz `curl -s https://api.github.com/repos/LearningLocker/learninglocker/releases/latest | jq --raw-output '.tarball_url'`\
+#RUN curl -L -o learninglocker.tar.gz `curl -s https://api.github.com/repos/LearningLocker/learninglocker/releases/latest | jq --raw-output '.tarball_url'`\
+RUN curl -L -o learninglocker.tar.gz https://github.com/LearningLocker/learninglocker/archive/v1.17.0.tar.gz\
 	&& tar -xzf learninglocker.tar.gz -C /var/www/html --strip-components=1 \
 	&& rm learninglocker.tar.gz \
 	&& chown -R www-data /var/www/html
+
+ADD composer.json /var/www/html/composer.json
 
 # fixes the framework autodetecting port 80 and generating HTTP URLs that need to be HTTPS when running behind tls reverse proxy
 RUN sed -i 's/<?php/<?php\n$_SERVER[SERVER_PORT]=443;\n$_SERVER[HTTPS]='on';/g' /var/www/html/public/index.php 
@@ -54,6 +57,7 @@ RUN mkdir -p /var/www/api && ln -s  /var/www/html/public /var/www/api/ll && chow
 USER www-data
 
 WORKDIR /var/www/html
+RUN composer update
 RUN composer install
 RUN mkdir -p /var/www/html/public/js-localization/ && cp vendor/andywer/js-localization/public/js/localization.js /var/www/html/public/js-localization/localization.js 
 EXPOSE 80
