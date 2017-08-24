@@ -1,31 +1,15 @@
-version: '2'
-
-services:
-    mongo:
-        image: mongo:latest
-        environment:
-            MONGODB_PASS: 'password'
-        ports:
-             - "27017:27017"
-             - "28017:28017"
-    learninglocker:
-        build: .
-        restart: always
-        depends_on:
-            - mongo
-        ports:
-            - "80:80"
-            - "81:81"
-        environment:
-            APP_URL: 'example.com'
-            LEARNINGLOCKER_DB_HOST: 'mongo'
-            LEARNINGLOCKER_DB_NAME: 'learninglocker'
-            LEARNINGLOCKER_DB_USER: ''  # change if needed
-            LEARNINGLOCKER_DB_PASSWORD: '' # change if needed
-            APP_SECRET_KEY: 'CHANGEME12345678'
-            SMTP_SERVER: 'smtp.sparkpost.com'
-            SMTP_PORT: 587
-            SMTP_USER: 'SMTP_INJECTION'
-            SMTP_PASSWORD: 'smtp-password'
-            EMAIL_FROM_NAME: 'Learning Locker LRS Docker Container'
-            EMAIL_FROM_ADDRESS: 'lrs@example.com'
+learninglocker:
+  image: slidewiki/learninglocker
+  restart: on-failure:5
+  expose:
+    - "80"
+  external_links:
+    - mongodb
+  environment:
+    - VIRTUAL_HOST=learninglocker.experimental.slidewiki.org
+    - LETSENCRYPT_HOST=learninglocker.experimental.slidewiki.org
+    - LETSENCRYPT_EMAIL=meissner@informatik.uni-leipzig.de
+    - APP_URL=learninglocker.experimental.slidewiki.org
+    - LEARNINGLOCKER_DB_HOST=mongodb
+    - LEARNINGLOCKER_DB_NAME=learninglocker
+    - APP_SECRET_KEY=5825195449557a9f407bf4a0c28f97a6d9ea11d4f9ef19576a9c9b0e020b0d09
