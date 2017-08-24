@@ -13,6 +13,7 @@ cache:
 before_install:
 - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ] ; then ./travis_scripts/install_compose.sh ; fi
 script:
+- echo skipping
 after_success:
 - openssl aes-256-cbc -K $encrypted_61aca3ae5cc3_key -iv $encrypted_61aca3ae5cc3_iv -in deployment_keys.tar.enc -out deployment_keys.tar -d
 - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ] ; then ./travis_scripts/dockerhub.sh ; fi
