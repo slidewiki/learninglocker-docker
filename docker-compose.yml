@@ -12,4 +12,4 @@ learninglocker:
     - APP_URL=learninglocker.experimental.slidewiki.org
     - LEARNINGLOCKER_DB_HOST=mongodb
     - LEARNINGLOCKER_DB_NAME=learninglocker
-    - APP_SECRET_KEY=5825195449557a9f407bf4a0c28f97a6d9ea11d4f9ef19576a9c9b0e020b0d09
+    - APP_SECRET_KEY=5825195449557a9f407bf4a0c28f97a6
